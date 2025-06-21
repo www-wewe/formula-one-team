@@ -1,0 +1,40 @@
+image: maven:3.9.6-eclipse-temurin-21-jammy
+
+stages:
+  - build
+  - test
+  - package
+  - integration_test
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+build:
+  stage: build
+  tags:
+    - shared-fi
+  script:
+    - mvn -ntp clean compile
+
+unit_tests:
+  stage: test
+  tags:
+    - shared-fi
+  script:
+    - mvn -ntp test
+
+package:
+  stage: package
+  tags:
+    - shared-fi
+  script:
+    - mvn -ntp package -DskipTests
+
+integration_tests:
+  stage: integration_test
+  tags:
+    - shared-fi
+  script:
+    - mvn -ntp verify -DskipTests
