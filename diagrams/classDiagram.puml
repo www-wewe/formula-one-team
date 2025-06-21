@@ -1,0 +1,68 @@
+@startuml
+
+enum ComponentType {
+    ENGINE
+    GEAR
+    SPOILER
+    SUSPENSION
+}
+
+class Component {
+    id: Long
+    weight: BigDecimal
+    price: BigDecimal
+    manufacturer: String
+    version: String
+    type: ComponentType
+}
+
+class Race {
+    id: Long
+    name: String
+    location: Location
+    date: LocalDate
+    car1: Car
+    car2: Car
+}
+
+class Location {
+    country: String
+    city: String
+    street: String
+}
+
+class Car {
+    id: Long
+    mainDriver: Driver
+    carMake: String
+    testDrivers: List<Driver>
+    components: List<Component>
+}
+
+class Driver {
+    id: Long
+    name: String
+    surname: String
+    nationality: String
+    driverPerk: DriverPerk
+}
+
+enum DriverPerk {
+    HAMMER_TIME
+    VERSTAPPEN
+    SMOOTH_OPERATOR
+    TYRE_WEAR
+    FUEL_SAVING
+    RAIN_MASTER
+    OVERTAKER
+    MAZESPIN
+    ROOKIE
+}
+
+Car  o--  Driver : drives
+Car o-- Component
+Car --o  Race : participates in
+Driver -->  DriverPerk : has
+Component --> ComponentType : has
+Race o--> Location
+@enduml

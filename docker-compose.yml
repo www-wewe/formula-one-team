@@ -1,0 +1,104 @@
+version: '3'
+
+services:
+  token-retriever:
+    container_name: token-retriever-service
+    image: "formula-one-team-token-retriever"
+    build:
+      context: .
+      dockerfile: ./token-retriever/Dockerfile
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    networks:
+      - formulanetwork
+
+  car:
+    container_name: car-service
+    image: "formula-one-team-car"
+    build:
+      context: .
+      dockerfile: ./car/Dockerfile
+    ports:
+      - "8084:8084"
+    expose:
+      - "8084"
+    networks:
+      - formulanetwork
+
+  component:
+    container_name: component-service
+    image: "formula-one-team-component"
+    build:
+      context: .
+      dockerfile: ./component/Dockerfile
+    ports:
+      - "8083:8083"
+    expose:
+      - "8083"
+    networks:
+      - formulanetwork
+
+  driver:
+    container_name: driver-service
+    image: "formula-one-team-driver"
+    build:
+      context: .
+      dockerfile: ./driver/Dockerfile
+    ports:
+      - "8082:8082"
+    expose:
+      - "8082"
+    networks:
+      - formulanetwork
+
+  race:
+    container_name: race-service
+    image: "formula-one-team-race"
+    build:
+      context: .
+      dockerfile: ./race/Dockerfile
+    ports:
+      - "8081:8081"
+    expose:
+      - "8081"
+    networks:
+      - formulanetwork
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command: --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - race
+      - driver
+      - component
+      - car
+    networks:
+      - formulanetwork
+
+  grafana:
+    image: grafana/grafana:9.5.1
+    volumes:
+      - "./grafana/datasource.yml:/etc/grafana/provisioning/datasources/data_source.yml"
+      - "./grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml"
+      - "./grafana/grafana.json:/etc/grafana/provisioning/dashboards/grafana.json"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - formulanetwork
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: 'admin'
+      GF_SECURITY_ADMIN_USER: 'admin'
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+#          GF_SECURITY_ADMIN_PASSWORD: '12345678'  this is another password
+
+
+networks:
+  formulanetwork: {}

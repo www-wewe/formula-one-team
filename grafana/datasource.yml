@@ -1,0 +1,14 @@
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    basicAuth: false
+    editable: true
+    jsonData:
+      httpMethod: POST
+      tlsAuth: false
+      tlsAuthWithCACert: false
+      tlsSkipVerify: false
+      timeInterval: "5s"

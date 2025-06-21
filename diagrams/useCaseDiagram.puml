@@ -1,0 +1,38 @@
+@startuml
+left to right direction
+actor Manager
+
+package "Formula One Manager" {
+    usecase "Manage components" as UC2
+    usecase "View components by manufacturer or type" as UC4
+    usecase "Add new component" as UC3
+    usecase "Update component" as UC5
+    usecase "Manage drivers" as UC6
+    usecase "Add driver" as UC7
+    usecase "Remove driver" as UC8
+    usecase "Manage cars" as UC9
+    usecase "View cars by car make" as UC10
+    usecase "View cars by main driver" as UC11
+    usecase "Set main/test driver to car" as UC12
+    usecase "Manage races" as UC14
+    usecase "Select cars for race" as UC15
+    usecase "View drivers by nationality or perk" as UC13
+    usecase "View races by location or car" as UC16
+}
+
+Manager --> UC2
+Manager --> UC6
+Manager --> UC9
+Manager --> UC14
+UC2 <.. UC3 : <<includes>>
+UC2 <.. UC4 : <<includes>>
+UC2 <.. UC5 : <<includes>>
+UC6 <.. UC7 : <<includes>>
+UC6 <.. UC8 : <<includes>>
+UC6 <.. UC13 : <<includes>>
+UC9 <.. UC10 : <<includes>>
+UC9 <.. UC11 : <<includes>>
+UC9 <.. UC12 : <<includes>>
+UC14 <.. UC15 : <<includes>>
+UC14 <.. UC16 : <<includes>>
+@enduml

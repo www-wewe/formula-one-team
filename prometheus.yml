@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 30s  # How often Prometheus scrapes metrics
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'prometheus:9090' ]
+
+  - job_name: 'race-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'race:8081' ]
+
+  - job_name: 'driver-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'driver:8082' ]
+
+  - job_name: 'component-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'component:8083' ]
+
+  - job_name: 'car-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'car:8084' ]
